@@ -3,9 +3,14 @@ package demo.scala
 object FunctionTest extends App {
   val sum = (a: Int, b: Int) => a + b
 
+  val sum1 : (Int, Int) => Int =
+    (a: Int, b: Int) => a + b
+
   val sum2 = new Function2[Int, Int, Int] {
     def apply(x: Int, y: Int): Int = x + y
   }
+
+  println(sum2(1, 2))
 
   def add(a: Int, b: Int): Int = a + b
   val sumFromMethod = add _

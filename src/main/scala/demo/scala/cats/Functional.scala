@@ -2,7 +2,7 @@ package demo.scala.cats
 
 
 import demo.scala.web.{Customer, Person}
-import demo.scala.web.Traditional.{HttpRequest, HttpResponse}
+import demo.scala.web.Model._
 
 import scala.concurrent.Future
 import scala.util.Try

@@ -1,12 +1,12 @@
 package demo.scala.web
-import demo.scala.web.Traditional.{HttpRequest, HttpResponse}
+
+import Model._
 
 object Functional {
 
-  type WebRequest = HttpRequest => HttpResponse
-
   object Serialiser {
     def serialise(c: Customer): HttpResponse = ???
+
     def deserialise(input: HttpRequest): Person = ???
   }
 
@@ -21,7 +21,6 @@ object Functional {
   val registerCustomer: WebRequest =
     deSerialisePerson andThen createCustomer andThen
       saveCustomer andThen serialiseCustomer
-
 
   type DatabaseConnection = String
 

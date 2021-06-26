@@ -4,11 +4,23 @@ import cats._
 import cats.implicits._
 
 object MonoidTest extends App {
+  // fold
+  val list = (1 to 100).toList
+  val s = list.foldLeft(0L) { (sum, i) =>
+    sum + i
+  }
+  println(s)
+
+  // int addition
   implicit val intAddMonoid: Monoid[Int] =
     new Monoid[Int] {
       def combine(a: Int, b: Int): Int = a + b
-      def empty = 1
+      def empty = 0
     }
+
+  println("with monoid")
+  println(list.foldLeft(intAddMonoid.empty)(intAddMonoid.combine))
+  println(intAddMonoid.combineAll(list))
 
   implicit val stringConcatMonoid: Monoid[String] =
     new Monoid[String] {
@@ -44,4 +56,17 @@ object MonoidTest extends App {
   val map2 = Map("b" -> 3, "d" -> 4)
 
   println(map1 |+| map2)
+  // Map(b -> 5, d -> 4, a -> 1)
+
+  // http://songkun.me/2018/06/03/2018-06-03-scala-cats-sum-by-monoid/
+  import scala.language.higherKinds
+  def sum[A: Monoid, F[_]: Foldable](xs: F[A]): A = {
+    val m = Monoid[A]
+    val f = Foldable[F]
+    f.foldLeft(xs, m.empty)(m.combine)
+  }
+
+  // final
+  println(sum(list)) // 5050
+  println(sum(map1 :: map2 :: Nil)) // Map(b -> 5, d -> 4, a -> 1)
 }

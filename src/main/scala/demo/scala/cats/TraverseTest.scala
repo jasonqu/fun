@@ -14,7 +14,7 @@ object TraverseTest extends App {
   }
 
   val res = Traverse[List].traverse(1 to 3 toList)(singleQuery)
-  res.foreach(println)
+  res.foreach(x => println(x + " " + System.currentTimeMillis()))
 
   Thread.sleep(1000)
 }

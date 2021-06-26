@@ -22,12 +22,14 @@ object TryTest extends App {
   }
 
   def divide2: Try[Int] = {
-    val dividend = () => Try(StdIn.readLine("Enter an Int that you'd like to divide:\n").toInt)
-    val divisor = () => Try(StdIn.readLine("Enter an Int that you'd like to divide by:\n").toInt)
+    def dividend = Try(StdIn.readLine("Enter an Int that you'd like to divide:\n").toInt)
+    def divisor = Try(StdIn.readLine("Enter an Int that you'd like to divide by:\n").toInt)
+    def devide(x: Int, y: Int) = Try(x / y)
     val problem = for {
-      x <- dividend()
-      y <- divisor()
-    } yield (x, y, x/y)
+      x <- dividend
+      y <- divisor
+      result <- devide(x, y)
+    } yield (x, y, result)
     problem match {
       case Success(v) =>
         println("Result of " + v._1 + "/"+ v._2 +" is: " + v._3)
@@ -42,10 +44,17 @@ object TryTest extends App {
   def divideWithRetry: Try[Int] = {
     val dividend = retry(3)(Try(StdIn.readLine("Enter an Int that you'd like to divide:\n").toInt))
     val divisor = retry(3)(Try(StdIn.readLine("Enter an Int that you'd like to divide by:\n").toInt))
+    def devide(x: Int, y: Int) = Try(x / y)
+
+    val retryDivisor: Int => Try[Int] = (x: Int) => for {
+      y <- divisor
+      result <- devide(x, y)
+    } yield result
+
     val problem = for {
       x <- dividend
-      y <- divisor
-    } yield x/y
+      result <- retry(3)(retryDivisor(x))
+    } yield result
     problem match {
       case Success(v) =>
         println("Result of " + dividend.get + "/"+ divisor.get +" is: " + v)

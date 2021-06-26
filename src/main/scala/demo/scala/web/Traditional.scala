@@ -1,22 +1,21 @@
 package demo.scala.web
 
-object Traditional {
-  type HttpRequest = String
-  type HttpResponse = String
+import Model._
 
-  type WebRequest = HttpRequest => HttpResponse
+object Traditional {
 
   trait Serialiser {
     def serialise(c: Customer): HttpResponse
+
     def deserialise(input: HttpRequest): Person
   }
 
   class WebController(service: ApplicationService,
-                       serialiser: Serialiser) {
-    def register(p: HttpRequest): HttpResponse = {
-      val person = serialiser.deserialise(p)
-      val c = service.registerCustomer(person)
-      serialiser.serialise(c)
+                      serialiser: Serialiser) {
+    def register(req: HttpRequest): HttpResponse = {
+      val person: Person = serialiser.deserialise(req)
+      val customer: Customer = service.registerCustomer(person)
+      serialiser.serialise(customer)
     }
   }
 
@@ -31,6 +30,7 @@ object Traditional {
   trait CustomerRepo {
     def saveCustomer(p: Customer): Unit
   }
+
 }
 
 

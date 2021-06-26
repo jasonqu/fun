@@ -26,8 +26,6 @@ object FailFast extends App {
       .ensure("negative age")(_.age > 0)
 
 
-
-
   def validateUser(user: User): Validated[List[String], User] = {
     val original = user.valid[List[String]]
     (original.ensure(List("name empty"))(_.name.nonEmpty),
@@ -40,9 +38,6 @@ object FailFast extends App {
 //    user.valid[List[String]]
 //      .ensure(List("name empty"))(_.name.nonEmpty)
 //      .ensure(List("negative age"))(_.age > 0)
-
-
-
 
 
   val user = User("", 0)

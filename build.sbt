@@ -10,6 +10,14 @@ lazy val fun = (project in file("."))
       val circeVersion = "0.9.3"
       val catsVersion = "1.6.0"
       Seq(
+        "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+        "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+
+        "org.typelevel" %% "cats-effect" % "1.3.0",
+//      "org.typelevel" %% "cats-effect" % "2.0.0",
+        //"org.typelevel" %% "cats-core" % "2.1.1",
+        //"com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
         "io.vavr" % "vavr" % "1.0.0-alpha-3"
       ).map(_ withSources()) ++ Seq(
         "io.circe" %% "circe-core",
